@@ -12,14 +12,16 @@
 
   <header class="header">
     <h1 class="header-title">メモアプリ</h1>
-    <a href="" class="header-link">追加する</a>
+    <a href="http://localhost:4567/new" class="header-link">追加する</a>
   </header>
 
   <section class="memo-wrap">
     <ul class="memo-list">
-      <a href="" class="memo-item-link">
-        <li class="memo-item">メモ1</li>
-      </a>
+      <% @title.each do |title| %>
+        <a href="" class="memo-item-link">
+          <%= "#{title}" %>
+        </a>
+      <% end %>
     </ul>
   </section>
 </main>

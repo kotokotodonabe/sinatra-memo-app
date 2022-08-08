@@ -32,6 +32,11 @@ main {
   display: inline-block;
 }
 
+/* index.erb */
+.memo-item-link {
+  display: block;
+}
+
 /* new.erb */
 .form-common {
   display: block;
