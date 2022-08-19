@@ -8,15 +8,20 @@
 
 <body>
 
-<main class="show">
+<main class="detail">
 
   <header class="header">
     <h1 class="header-title">メモアプリ</h1>
   </header>
 
-  <section class="show-wrap">
-    <h2 class="show-title"><%= @title %></h2>
-    <p class="show-text"><%= @text %></p>
+  <section class="detail-wrap">
+    <h2 class="detail-title"><%= @title %></h2>
+    <p class="detail-text"><%= @text %></p>
+
+    <div class="detail-btn-wrap">
+      <a href="/edits/<%= @edit %>" class="detail-btn">変更</a>
+      <a href="" class="detail-btn">削除</a>
+    </div>
   </section>
 </main>
 
