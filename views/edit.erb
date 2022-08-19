@@ -15,8 +15,8 @@
   </header>
 
   <form action="/" method="PUT">
-    <input class="form-common input" type="text" name="title" value="">
-    <textarea class="form-common textarea" name="message" rows="5"></textarea>
+    <textarea class="form-common textarea" name="message" rows="5"><%= @title %></textarea>
+    <textarea class="form-common textarea" name="message" rows="5"><%= @text %></textarea>
     <input class="submit" type="submit" value="変更">
   </form>
 
