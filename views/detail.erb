@@ -19,8 +19,11 @@
     <p class="detail-text"><%= @text %></p>
 
     <div class="detail-btn-wrap">
-      <a href="/edits/<%= @edit %>" class="detail-btn">変更</a>
-      <a href="" class="detail-btn">削除</a>
+      <a href="<%= @uri %>/edits" class="detail-btn">変更</a>
+      <form action="delete" method="post">
+        <input type="hidden" name="_method" value="patch">
+        <input class="detail-btn" type="submit" value="削除">
+      </form>
     </div>
   </section>
 </main>
