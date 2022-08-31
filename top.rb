@@ -2,7 +2,11 @@ require "sinatra"
 require "sinatra/reloader"
 require "csv"
 require "securerandom"
+require "pry"
 
+enable :method_override
+
+# トップページ
 get "/" do
 
   @multi_arr = []
@@ -17,34 +21,41 @@ get "/new" do
   erb :new
 end
 
+# メモ詳細画面
 get "/details/:detail_id" do
-  detail = params['detail_id']
-  CSV.foreach("post.csv", "r") do |csv|
-    if detail == csv[0]
-      @title = csv[1]
-      @text = csv[2]
+  detail_id = params['detail_id']
 
-      @edit = csv[0]
+  CSV.foreach("post.csv") do |line|
+    if detail_id == line[0]
+      @uri = line[0]
+      @title = line[1]
+      @text = line[2]
     end
   end
   erb :detail
 end
 
-get "/edits/:edit_id" do
-  edit = params['edit_id']
-  CSV.foreach("post.csv", "r") do |csv|
-    if edit == csv[0]
-      @title = csv[1]
-      @text = csv[2]
+# メモ編集画面
+get "/details/:detail_id/edits" do
+  detail_id = params['detail_id']
+
+  CSV.foreach("post.csv") do |line|
+    if detail_id == line[0]
+      @uri = line[0]
+      @title = line[1]
+      @text = line[2]
     end
   end
   erb :edit
 end
 
+
+### POSTメソッドの処理
+
+# トップページ
 post "/" do
   @title = params[:title]
   @text = params[:text]
-
   @random = SecureRandom.alphanumeric()
 
   CSV.open("post.csv", "a") do |csv|
@@ -52,4 +63,33 @@ post "/" do
   end
 
   redirect to('/')
+end
+
+# メモ詳細ページ(patch)
+patch "/details/:detail_id" do
+  detail_id = params['detail_id']
+  @title = params[:title]
+  @text = params[:text]
+  @line_arr = []
+  
+  File.open("post.csv", "r+") do |csv|
+    csv.each_line do |line|
+      @line_arr << line.chomp.split(',')
+    end
+  end
+
+  @line_arr.map do |frame|
+    if detail_id == frame[0]
+      frame[1] = @title
+      frame[2] = @text
+    end
+  end
+
+  CSV.open("post.csv", "w") do |csv|
+    @line_arr.each do |frame| 
+      csv << frame
+    end
+  end
+  
+  redirect to("details/#{detail_id}")
 end

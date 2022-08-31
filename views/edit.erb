@@ -8,16 +8,19 @@
 
 <body>
 
-<main class="new">
+<main class="edit">
 
   <header class="header">
     <h1 class="header-title">メモアプリ</h1>
   </header>
 
-  <form action="/" method="PUT">
-    <textarea class="form-common textarea" name="message" rows="5"><%= @title %></textarea>
-    <textarea class="form-common textarea" name="message" rows="5"><%= @text %></textarea>
-    <input class="submit" type="submit" value="変更">
+  <form action="/details/<%= @uri %>" method="post">
+    <textarea class="form-common textarea" name="title" rows="5"><%= @title %></textarea>
+    <textarea class="form-common textarea" name="text" rows="5"><%= @text %></textarea>
+    <div class="btn-wrap">
+      <input type="hidden" name="_method" value="patch">
+      <input class="submit" type="submit" value="変更">
+    </div>
   </form>
 
 </main>
