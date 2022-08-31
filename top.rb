@@ -93,3 +93,28 @@ patch "/details/:detail_id" do
   
   redirect to("details/#{detail_id}")
 end
+
+# メモ詳細ページ(delete)
+delete "/:detail_id/delete" do
+  delete_id = params['detail_id']
+  @csv_arr = []
+  
+  File.open("post.csv", "r+") do |csv|
+    csv.each_line do |line|
+      line_arr = line.chomp.split(',')
+      if delete_id == line_arr[0]
+        line_arr.delete(0..2)
+      else
+        @csv_arr << line_arr
+      end
+    end
+  end
+
+  CSV.open("post.csv", "w") do |csv|
+    @csv_arr.each do |frame|
+      csv << frame
+    end
+  end
+  
+  redirect to("/")
+end
