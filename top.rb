@@ -1,8 +1,10 @@
-require "sinatra"
-require "sinatra/reloader"
-require "csv"
-require "securerandom"
-require "pry"
+# frozen_string_literal: true
+
+require 'sinatra'
+require 'sinatra/reloader'
+require 'csv'
+require 'securerandom'
+require 'pry'
 
 enable :method_override
 
@@ -13,25 +15,24 @@ helpers do
 end
 
 # トップページ
-get "/" do
-
+get '/' do
   @multi_arr = []
-  CSV.foreach("post.csv") do |line|
+  CSV.foreach('post.csv') do |line|
     @multi_arr << line
   end
 
   erb :index
 end
 
-get "/new" do
+get '/new' do
   erb :new
 end
 
 # メモ詳細画面
-get "/details/:detail_id" do
+get '/details/:detail_id' do
   detail_id = params['detail_id']
 
-  CSV.foreach("post.csv") do |line|
+  CSV.foreach('post.csv') do |line|
     if detail_id == line[0]
       @uri = line[0]
       @title = line[1]
@@ -42,10 +43,10 @@ get "/details/:detail_id" do
 end
 
 # メモ編集画面
-get "/details/:detail_id/edits" do
+get '/details/:detail_id/edits' do
   detail_id = params['detail_id']
 
-  CSV.foreach("post.csv") do |line|
+  CSV.foreach('post.csv') do |line|
     if detail_id == line[0]
       @uri = line[0]
       @title = line[1]
@@ -55,16 +56,15 @@ get "/details/:detail_id/edits" do
   erb :edit
 end
 
-
 ### POSTメソッドの処理
 
 # トップページ
-post "/" do
+post '/' do
   @title = params[:title]
   @text = params[:text]
-  @random = SecureRandom.alphanumeric()
+  @random = SecureRandom.alphanumeric
 
-  CSV.open("post.csv", "a") do |csv|
+  CSV.open('post.csv', 'a') do |csv|
     csv << [@random, @title, @text]
   end
 
@@ -72,13 +72,12 @@ post "/" do
 end
 
 # メモ詳細ページ(patch)
-patch "/details/:detail_id" do
+patch '/details/:detail_id' do
   detail_id = params['detail_id']
   @title = params[:title]
   @text = params[:text]
   @line_arr = []
-  
-  File.open("post.csv", "r+") do |csv|
+  File.open('post.csv', 'r+') do |csv|
     csv.each_line do |line|
       @line_arr << line.chomp.split(',')
     end
@@ -91,21 +90,19 @@ patch "/details/:detail_id" do
     end
   end
 
-  CSV.open("post.csv", "w") do |csv|
-    @line_arr.each do |frame| 
+  CSV.open('post.csv', 'w') do |csv|
+    @line_arr.each do |frame|
       csv << frame
     end
   end
-  
   redirect to("details/#{detail_id}")
 end
 
 # メモ詳細ページ(delete)
-delete "/:detail_id/delete" do
+delete '/:detail_id/delete' do
   delete_id = params['detail_id']
   @csv_arr = []
-  
-  File.open("post.csv", "r+") do |csv|
+  File.open('post.csv', 'r+') do |csv|
     csv.each_line do |line|
       line_arr = line.chomp.split(',')
       if delete_id == line_arr[0]
@@ -115,12 +112,10 @@ delete "/:detail_id/delete" do
       end
     end
   end
-
-  CSV.open("post.csv", "w") do |csv|
+  CSV.open('post.csv', 'w') do |csv|
     @csv_arr.each do |frame|
       csv << frame
     end
   end
-  
-  redirect to("/")
+  redirect to('/')
 end
