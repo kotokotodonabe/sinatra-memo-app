@@ -1,11 +1,5 @@
 ---
-EnableDefaultLinters: true
+glob: "**/*.erb"
 linters:
-  ErbSafety:
-    enabled: true
-    better_html_config: .better-html.yml
-  Rubocop:
-    enabled: true
-    rubocop_config:
-      inherit_from:
-        - .rubocop.yml
+  RequireInputAutocomplete:
+    enabled: false
