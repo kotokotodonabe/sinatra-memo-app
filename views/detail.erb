@@ -15,8 +15,8 @@
   </header>
 
   <section class="detail-wrap">
-    <h2 class="detail-title"><%= @title %></h2>
-    <p class="detail-text"><%= @text %></p>
+    <h2 class="detail-title"><%= h @title %></h2>
+    <p class="detail-text"><%= h @text %></p>
 
     <div class="detail-btn-wrap">
       <a href="<%= @uri %>/edits" class="detail-btn">変更</a>
