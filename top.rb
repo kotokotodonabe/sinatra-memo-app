@@ -14,6 +14,10 @@ helpers do
   end
 end
 
+not_found do
+  erb :not_found
+end
+
 # トップページ
 get '/' do
   @multi_arr = []
