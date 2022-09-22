@@ -20,7 +20,7 @@
 
     <div class="detail-btn-wrap">
       <a href="<%= @uri %>/edits" class="detail-btn">変更</a>
-      <form action="/<%= @uri %>/delete" method="post">
+      <form action="/<%= @uri %>" method="post">
         <input type="hidden" name="_method" value="delete">
         <input class="detail-btn" type="submit" value="削除">
       </form>
