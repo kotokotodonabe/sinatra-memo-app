@@ -19,7 +19,7 @@
     <ul class="memo-list">
       <% @multi_arr.each do |frame| %>
         <li class="memo-list-item">
-          <a href="/details/<%= h "#{frame[0]}" %>" class="memo-item-link">
+          <a href="/memos/<%= h "#{frame[0]}" %>" class="memo-item-link">
             <%= h "#{frame[1]}" %>
           </a>
         </li>

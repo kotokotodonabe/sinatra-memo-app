@@ -33,28 +33,24 @@ get '/new' do
 end
 
 # メモ詳細画面
-get '/details/:detail_id' do
+get '/memos/:detail_id' do
   detail_id = params['detail_id']
 
   CSV.foreach('post.csv') do |line|
     if detail_id == line[0]
-      @uri = line[0]
-      @title = line[1]
-      @text = line[2]
+      @uri,@title,@text = line[0],line[1],line[2]
     end
   end
   erb :detail
 end
 
 # メモ編集画面
-get '/details/:detail_id/edits' do
+get '/memos/:detail_id/edits' do
   detail_id = params['detail_id']
 
   CSV.foreach('post.csv') do |line|
     if detail_id == line[0]
-      @uri = line[0]
-      @title = line[1]
-      @text = line[2]
+      @uri,@title,@text = line[0],line[1],line[2]
     end
   end
   erb :edit
@@ -64,9 +60,10 @@ end
 
 # トップページ
 post '/' do
+  @random = SecureRandom.alphanumeric
   @title = params[:title]
   @text = params[:text]
-  @random = SecureRandom.alphanumeric
+  binding.pry
 
   CSV.open('post.csv', 'a') do |csv|
     csv << [@random, @title, @text]
@@ -76,21 +73,20 @@ post '/' do
 end
 
 # メモ詳細ページ(patch)
-patch '/details/:detail_id' do
+patch '/memos/:detail_id' do
   detail_id = params['detail_id']
-  @title = params[:title]
-  @text = params[:text]
+  @title,@text = params[:title], params[:text]
+
   @line_arr = []
-  File.open('post.csv', 'r+') do |csv|
-    csv.each_line do |line|
-      @line_arr << line.chomp.split(',')
+  CSV.open('post.csv', 'r') do |csv|
+    csv.each do |line|
+      @line_arr << line
     end
   end
 
-  @line_arr.map do |frame|
+  @line_arr.each do |frame|
     if detail_id == frame[0]
-      frame[1] = @title
-      frame[2] = @text
+      frame[1], frame[2] = @title, @text
     end
   end
 
@@ -99,20 +95,17 @@ patch '/details/:detail_id' do
       csv << frame
     end
   end
-  redirect to("details/#{detail_id}")
+  redirect to("memos/#{detail_id}")
 end
 
 # メモ詳細ページ(delete)
-delete '/:detail_id/delete' do
+delete '/:detail_id' do
   delete_id = params['detail_id']
   @csv_arr = []
-  File.open('post.csv', 'r+') do |csv|
-    csv.each_line do |line|
-      line_arr = line.chomp.split(',')
-      if delete_id == line_arr[0]
-        line_arr.delete(0..2)
-      else
-        @csv_arr << line_arr
+  CSV.open('post.csv', 'r+') do |csv|
+    csv.reject do |line|
+      if delete_id != line[0]
+        @csv_arr << line
       end
     end
   end
