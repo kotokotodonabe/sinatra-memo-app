@@ -36,11 +36,10 @@ end
 get '/memos/:detail_id' do
   detail_id = params['detail_id']
 
-  CSV.foreach('post.csv') do |line|
-    if detail_id == line[0]
-      @uri,@title,@text = line[0],line[1],line[2]
-    end
-  end
+  array = CSV.open('post.csv').detect { |line| detail_id == line[0] }
+  @id = array[0]
+  @title = array[1]
+  @text = array[2]
   erb :detail
 end
 
@@ -48,25 +47,23 @@ end
 get '/memos/:detail_id/edits' do
   detail_id = params['detail_id']
 
-  CSV.foreach('post.csv') do |line|
-    if detail_id == line[0]
-      @uri,@title,@text = line[0],line[1],line[2]
-    end
-  end
+  array = CSV.open('post.csv').detect { |line| detail_id == line[0] }
+  @id = array[0]
+  @title = array[1]
+  @text = array[2]
   erb :edit
 end
 
 ### POSTメソッドの処理
 
-# トップページ
-post '/' do
-  @random = SecureRandom.alphanumeric
-  @title = params[:title]
-  @text = params[:text]
-  binding.pry
+# 新規作成ページ
+post '/new' do
+  random = SecureRandom.alphanumeric
+  title = params[:title]
+  text = params[:text]
 
   CSV.open('post.csv', 'a') do |csv|
-    csv << [@random, @title, @text]
+    csv << [random, title, text]
   end
 
   redirect to('/')
@@ -75,44 +72,26 @@ end
 # メモ詳細ページ(patch)
 patch '/memos/:detail_id' do
   detail_id = params['detail_id']
-  @title,@text = params[:title], params[:text]
+  title = params[:title]
+  text = params[:text]
 
-  @line_arr = []
-  CSV.open('post.csv', 'r') do |csv|
-    csv.each do |line|
-      @line_arr << line
-    end
-  end
-
-  @line_arr.each do |frame|
-    if detail_id == frame[0]
-      frame[1], frame[2] = @title, @text
-    end
-  end
+  @line_arr = CSV.read('post.csv')
 
   CSV.open('post.csv', 'w') do |csv|
     @line_arr.each do |frame|
-      csv << frame
+      csv << if detail_id == frame[0]
+              [frame[0], frame[1] = title, frame[2] = text]
+            else
+              frame
+            end
     end
   end
   redirect to("memos/#{detail_id}")
 end
 
 # メモ詳細ページ(delete)
-delete '/:detail_id' do
+delete '/memos/:detail_id' do
   delete_id = params['detail_id']
-  @csv_arr = []
-  CSV.open('post.csv', 'r+') do |csv|
-    csv.reject do |line|
-      if delete_id != line[0]
-        @csv_arr << line
-      end
-    end
-  end
-  CSV.open('post.csv', 'w') do |csv|
-    @csv_arr.each do |frame|
-      csv << frame
-    end
-  end
+  CSV.open('post.csv').reject { |line| delete_id == line[0] }
   redirect to('/')
 end
