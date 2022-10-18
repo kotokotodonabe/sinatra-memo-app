@@ -28,7 +28,7 @@ get '/' do
   erb :index
 end
 
-get '/new' do
+get '/memos/new' do
   erb :new
 end
 
@@ -57,7 +57,7 @@ end
 ### POSTメソッドの処理
 
 # 新規作成ページ
-post '/new' do
+post '/memos/new' do
   random = SecureRandom.alphanumeric
   title = params[:title]
   text = params[:text]
@@ -80,7 +80,7 @@ patch '/memos/:detail_id' do
   CSV.open('post.csv', 'w') do |csv|
     @line_arr.each do |frame|
       csv << if detail_id == frame[0]
-              [frame[0], frame[1] = title, frame[2] = text]
+              [frame[0],title, text]
             else
               frame
             end
