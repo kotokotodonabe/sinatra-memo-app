@@ -28,7 +28,7 @@ get '/' do
   erb :index
 end
 
-get '/new' do
+get '/memos/new' do
   erb :new
 end
 
@@ -57,7 +57,7 @@ end
 ### POSTメソッドの処理
 
 # 新規作成ページ
-post '/new' do
+post '/memos/new' do
   random = SecureRandom.alphanumeric
   title = params[:title]
   text = params[:text]
