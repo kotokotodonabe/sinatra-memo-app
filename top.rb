@@ -80,10 +80,10 @@ patch '/memos/:detail_id' do
   CSV.open('post.csv', 'w') do |csv|
     @line_arr.each do |frame|
       csv << if detail_id == frame[0]
-              [frame[0],title, text]
-            else
-              frame
-            end
+               [frame[0], title, text]
+             else
+               frame
+             end
     end
   end
   redirect to("memos/#{detail_id}")
