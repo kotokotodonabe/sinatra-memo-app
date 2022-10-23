@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf8">
+<title>テスト</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<main class="detail">
+
+  <header class="header">
+    <h1 class="header-title">メモアプリ</h1>
+  </header>
+
+  <section class="detail-wrap">
+    <h2 class="detail-title"><%= h @title %></h2>
+    <p class="detail-text"><%= h @text %></p>
+
+    <div class="detail-btn-wrap">
+      <a href="<%= @id %>/edits" class="detail-btn">変更</a>
+      <form action="<%= @id %>" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <input class="detail-btn" type="submit" value="削除">
+      </form>
+    </div>
+  </section>
+</main>
+
+</body>
+</html>

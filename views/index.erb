@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf8">
+<title>テスト</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<main class="memo">
+
+  <header class="header">
+    <h1 class="header-title">メモアプリ</h1>
+    <a href="/memos/new" class="header-link">追加する</a>
+  </header>
+
+  <section class="memo-wrap">
+    <ul class="memo-list">
+      <% @multi_arr.each do |frame| %>
+        <li class="memo-list-item">
+          <a href="/memos/<%= h "#{frame[0]}" %>" class="memo-item-link">
+            <%= h "#{frame[1]}" %>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+</main>
+
+</body>
+</html>

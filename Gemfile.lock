@@ -1,0 +1,128 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    actionview (7.0.3.1)
+      activesupport (= 7.0.3.1)
+      builder (~> 3.1)
+      erubi (~> 1.4)
+      rails-dom-testing (~> 2.0)
+      rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    activesupport (7.0.3.1)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      tzinfo (~> 2.0)
+    ast (2.4.2)
+    better_html (1.0.16)
+      actionview (>= 4.0)
+      activesupport (>= 4.0)
+      ast (~> 2.0)
+      erubi (~> 1.4)
+      html_tokenizer (~> 0.0.6)
+      parser (>= 2.4)
+      smart_properties
+    builder (3.2.4)
+    coderay (1.1.3)
+    concurrent-ruby (1.1.10)
+    crass (1.0.6)
+    debug (1.5.0)
+      irb (>= 1.3.6)
+      reline (>= 0.2.7)
+    erb_lint (0.1.3)
+      activesupport
+      better_html (~> 1.0.7)
+      html_tokenizer
+      parser (>= 2.7.1.4)
+      rainbow
+      rubocop
+      smart_properties
+    erubi (1.10.0)
+    html_tokenizer (0.0.7)
+    i18n (1.12.0)
+      concurrent-ruby (~> 1.0)
+    io-console (0.5.11)
+    irb (1.4.1)
+      reline (>= 0.3.0)
+    loofah (2.18.0)
+      crass (~> 1.0.2)
+      nokogiri (>= 1.5.9)
+    method_source (1.0.0)
+    minitest (5.16.2)
+    multi_json (1.15.0)
+    mustermann (1.1.1)
+      ruby2_keywords (~> 0.0.1)
+    nokogiri (1.13.8-x86_64-darwin)
+      racc (~> 1.4)
+    parallel (1.22.1)
+    parser (3.1.2.0)
+      ast (~> 2.4.1)
+    pry (0.14.1)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
+    pry-rails (0.3.9)
+      pry (>= 0.10.4)
+    racc (1.6.0)
+    rack (2.2.3.1)
+    rack-protection (2.2.0)
+      rack
+    rails-dom-testing (2.0.3)
+      activesupport (>= 4.2.0)
+      nokogiri (>= 1.6)
+    rails-html-sanitizer (1.4.3)
+      loofah (~> 2.3)
+    rainbow (3.1.1)
+    regexp_parser (2.5.0)
+    reline (0.3.1)
+      io-console (~> 0.5)
+    rexml (3.2.5)
+    rubocop (1.30.1)
+      parallel (~> 1.10)
+      parser (>= 3.1.0.0)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 1.8, < 3.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.18.0, < 2.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 1.4.0, < 3.0)
+    rubocop-ast (1.18.0)
+      parser (>= 3.1.1.0)
+    rubocop-fjord (0.2.0)
+      rubocop (>= 1.0)
+      rubocop-performance
+    rubocop-performance (1.14.2)
+      rubocop (>= 1.7.0, < 2.0)
+      rubocop-ast (>= 0.4.0)
+    ruby-progressbar (1.11.0)
+    ruby2_keywords (0.0.5)
+    sinatra (2.2.0)
+      mustermann (~> 1.0)
+      rack (~> 2.2)
+      rack-protection (= 2.2.0)
+      tilt (~> 2.0)
+    sinatra-contrib (2.2.0)
+      multi_json
+      mustermann (~> 1.0)
+      rack-protection (= 2.2.0)
+      sinatra (= 2.2.0)
+      tilt (~> 2.0)
+    smart_properties (1.17.0)
+    tilt (2.0.10)
+    tzinfo (2.0.5)
+      concurrent-ruby (~> 1.0)
+    unicode-display_width (2.1.0)
+    webrick (1.7.0)
+
+PLATFORMS
+  x86_64-darwin-21
+
+DEPENDENCIES
+  debug
+  erb_lint
+  pry-rails
+  rubocop-fjord
+  sinatra
+  sinatra-contrib
+  webrick
+
+BUNDLED WITH
+   2.3.14
