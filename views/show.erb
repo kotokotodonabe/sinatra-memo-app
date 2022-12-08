@@ -19,8 +19,8 @@
     <p class="detail-text"><%= h @text %></p>
 
     <div class="detail-btn-wrap">
-      <a href="<%= @id %>/edits" class="detail-btn">変更</a>
-      <form action="<%= @id %>" method="post">
+      <a href="<%= @url %>/edits" class="detail-btn">変更</a>
+      <form action="/memos/<%= @url %>" method="post">
         <input type="hidden" name="_method" value="delete">
         <input class="detail-btn" type="submit" value="削除">
       </form>
