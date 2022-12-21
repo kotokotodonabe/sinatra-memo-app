@@ -8,19 +8,23 @@ require 'pry'
 
 enable :method_override
 
-class Memo
-  @conn = PG.connect(dbname: 'memo')
+class Connect
+  def self.conn
+    conn = PG.connect(dbname: 'memo')
+  end
+end
 
+class Memo
   def self.create(url, title, text)
-    @conn.exec('INSERT INTO memos(url, title, text) VALUES($1, $2, $3);', [url, title, text])
+    Connect.conn.exec('INSERT INTO memos(url, title, text) VALUES($1, $2, $3);', [url, title, text])
   end
 
   def self.update(url, title, text)
-    @conn.exec('UPDATE memos SET title = $1, text = $2 WHERE url = $3;', [title, text, url])
+    Connect.conn.exec('UPDATE memos SET title = $1, text = $2 WHERE url = $3;', [title, text, url])
   end
 
   def self.delete(url)
-    @conn.exec('DELETE FROM memos WHERE url = $1;', [url])
+    Connect.conn.exec('DELETE FROM memos WHERE url = $1;', [url])
   end
 end
 
@@ -37,8 +41,7 @@ end
 # トップページ
 get '/' do
   @memos = []
-  conn = PG.connect(dbname: 'memo')
-  conn.exec('SELECT url, title From memos') do |result|
+  Connect.conn.exec('SELECT url, title From memos') do |result|
     result.each do |row|
       @memos << row
     end
@@ -53,8 +56,7 @@ end
 
 # メモ詳細画面
 get '/memos/:memo_id' do
-  conn = PG.connect(dbname: 'memo')
-  conn.exec('SELECT * from memos') do |result|
+  Connect.conn.exec('SELECT * from memos') do |result|
     result.each do |row|
       next unless params[:memo_id] == row['url']
 
@@ -69,8 +71,7 @@ end
 
 # メモ編集画面
 get '/memos/:memo_id/edits' do
-  conn = PG.connect(dbname: 'memo')
-  conn.exec('SELECT * from memos') do |result|
+  Connect.conn.exec('SELECT * from memos') do |result|
     result.each do |row|
       next unless params[:memo_id] == row['url']
 
