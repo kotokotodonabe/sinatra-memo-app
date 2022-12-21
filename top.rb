@@ -57,13 +57,7 @@ end
 # メモ詳細画面
 get '/memos/:memo_id' do
   Connect.conn.exec('SELECT * from memos') do |result|
-    result.each do |row|
-      next unless params[:memo_id] == row['url']
-
-      @url = row['url']
-      @title = row['title']
-      @text = row['text']
-    end
+    @memo = result.find { |row| row['url'] == params[:memo_id] }
   end
 
   erb :show
@@ -72,13 +66,7 @@ end
 # メモ編集画面
 get '/memos/:memo_id/edits' do
   Connect.conn.exec('SELECT * from memos') do |result|
-    result.each do |row|
-      next unless params[:memo_id] == row['url']
-
-      @url = row['url']
-      @title = row['title']
-      @text = row['text']
-    end
+    @memo = result.find { |row| row['url'] == params[:memo_id] }
   end
 
   erb :edit
