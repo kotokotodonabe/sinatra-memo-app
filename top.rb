@@ -10,7 +10,7 @@ enable :method_override
 
 class Connect
   def self.conn
-    conn = PG.connect(dbname: 'memo')
+    @conn = PG.connect(dbname: 'memo')
   end
 end
 
@@ -42,9 +42,7 @@ end
 get '/' do
   @memos = []
   Connect.conn.exec('SELECT url, title From memos') do |result|
-    result.each do |row|
-      @memos << row
-    end
+    @memos = result.to_a
   end
 
   erb :index
