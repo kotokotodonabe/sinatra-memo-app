@@ -17,10 +17,10 @@
 
   <section class="memo-wrap">
     <ul class="memo-list">
-      <% @multi_arr.each do |frame| %>
+      <% @memos.each do |frame| %>
         <li class="memo-list-item">
-          <a href="/memos/<%= h "#{frame[0]}" %>" class="memo-item-link">
-            <%= h "#{frame[1]}" %>
+          <a href="/memos/<%= h "#{frame["url"]}" %>" class="memo-item-link">
+            <%= h "#{frame["title"]}" %>
           </a>
         </li>
       <% end %>

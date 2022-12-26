@@ -14,9 +14,9 @@
     <h1 class="header-title">メモアプリ</h1>
   </header>
 
-  <form action="/memos/<%= @id %>" method="post">
-    <input class="form-common input" type="text" name="title" value="<%= h @title %>">
-    <textarea class="form-common textarea" name="text" rows="5"><%= h @text %></textarea>
+  <form action="/memos/<%= @memo['url'] %>" method="post">
+    <input class="form-common input" type="text" name="title" value="<%= h @memo['title'] %>">
+    <textarea class="form-common textarea" name="text" rows="5"><%= h @memo['text'] %></textarea>
     <div class="btn-wrap">
       <input type="hidden" name="_method" value="patch">
       <input class="submit" type="submit" value="変更">

@@ -2,11 +2,31 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
-require 'csv'
+require 'pg'
 require 'securerandom'
 require 'pry'
 
 enable :method_override
+
+class Connect
+  def self.conn
+    @conn = PG.connect(dbname: 'memo')
+  end
+end
+
+class Memo
+  def self.create(url, title, text)
+    Connect.conn.exec('INSERT INTO memos(url, title, text) VALUES($1, $2, $3);', [url, title, text])
+  end
+
+  def self.update(url, title, text)
+    Connect.conn.exec('UPDATE memos SET title = $1, text = $2 WHERE url = $3;', [title, text, url])
+  end
+
+  def self.delete(url)
+    Connect.conn.exec('DELETE FROM memos WHERE url = $1;', [url])
+  end
+end
 
 helpers do
   def h(text)
@@ -20,9 +40,9 @@ end
 
 # トップページ
 get '/' do
-  @multi_arr = []
-  CSV.foreach('post.csv') do |line|
-    @multi_arr << line
+  @memos = []
+  Connect.conn.exec('SELECT url, title From memos') do |result|
+    @memos = result.to_a
   end
 
   erb :index
@@ -33,65 +53,44 @@ get '/memos/new' do
 end
 
 # メモ詳細画面
-get '/memos/:detail_id' do
-  detail_id = params['detail_id']
+get '/memos/:memo_id' do
+  Connect.conn.exec('SELECT * from memos') do |result|
+    @memo = result.find { |row| row['url'] == params[:memo_id] }
+  end
 
-  array = CSV.open('post.csv').detect { |line| detail_id == line[0] }
-  @id = array[0]
-  @title = array[1]
-  @text = array[2]
-  erb :detail
+  erb :show
 end
 
 # メモ編集画面
-get '/memos/:detail_id/edits' do
-  detail_id = params['detail_id']
+get '/memos/:memo_id/edits' do
+  Connect.conn.exec('SELECT * from memos') do |result|
+    @memo = result.find { |row| row['url'] == params[:memo_id] }
+  end
 
-  array = CSV.open('post.csv').detect { |line| detail_id == line[0] }
-  @id = array[0]
-  @title = array[1]
-  @text = array[2]
   erb :edit
 end
 
 ### POSTメソッドの処理
 
-# 新規作成ページ
-post '/memos/new' do
-  random = SecureRandom.alphanumeric
-  title = params[:title]
-  text = params[:text]
-
-  CSV.open('post.csv', 'a') do |csv|
-    csv << [random, title, text]
-  end
+# トップページ
+post '/' do
+  url = SecureRandom.alphanumeric
+  Memo.create(url, params[:title], params[:text])
 
   redirect to('/')
 end
 
 # メモ詳細ページ(patch)
-patch '/memos/:detail_id' do
-  detail_id = params['detail_id']
-  title = params[:title]
-  text = params[:text]
+patch '/memos/:memo_id' do
+  memo_id = params[:memo_id]
+  Memo.update(memo_id, params[:title], params[:text])
 
-  @line_arr = CSV.read('post.csv')
-
-  CSV.open('post.csv', 'w') do |csv|
-    @line_arr.each do |frame|
-      csv << if detail_id == frame[0]
-               [frame[0], title, text]
-             else
-               frame
-             end
-    end
-  end
-  redirect to("memos/#{detail_id}")
+  redirect to("memos/#{memo_id}")
 end
 
 # メモ詳細ページ(delete)
-delete '/memos/:detail_id' do
-  delete_id = params['detail_id']
-  CSV.open('post.csv').reject { |line| delete_id == line[0] }
+delete '/memos/:memo_id' do
+  Memo.delete(params[:memo_id].to_s)
+
   redirect to('/')
 end

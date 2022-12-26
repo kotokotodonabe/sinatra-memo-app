@@ -15,12 +15,12 @@
   </header>
 
   <section class="detail-wrap">
-    <h2 class="detail-title"><%= h @title %></h2>
-    <p class="detail-text"><%= h @text %></p>
+    <h2 class="detail-title"><%= h @memo['title'] %></h2>
+    <p class="detail-text"><%= h @memo['text'] %></p>
 
     <div class="detail-btn-wrap">
-      <a href="<%= @id %>/edits" class="detail-btn">変更</a>
-      <form action="<%= @id %>" method="post">
+      <a href="<%= @memo['url'] %>/edits" class="detail-btn">変更</a>
+      <form action="/memos/<%= @memo['url'] %>" method="post">
         <input type="hidden" name="_method" value="delete">
         <input class="detail-btn" type="submit" value="削除">
       </form>
